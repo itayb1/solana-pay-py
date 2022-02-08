@@ -1,4 +1,4 @@
-from solana_pay_py import __version__
+from solana_pay import __version__
 
 
 def test_version():
