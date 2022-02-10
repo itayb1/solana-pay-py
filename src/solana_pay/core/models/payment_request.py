@@ -1,8 +1,8 @@
 from solana.publickey import PublicKey
 from dataclasses import dataclass
-from typing import Union, List, Dict, Optional, NamedTuple, Tuple
+from typing import Union, List, Optional, Tuple
 from urllib.parse import urlencode, urlparse, parse_qs, ParseResult
-from solana_pay.utils.helpers import is_null
+from solana_pay.common.utils.helpers import is_null
 
 URL_PROTOCOL = "solana:"
 
@@ -18,13 +18,13 @@ class PaymentRequest:
     memo: Optional[str] = None
 
     def __post_init__(self):
-        if self.amount < 0:
+        if self.amount != None and self.amount < 0:
             raise ValueError("amount cannot be a negative.")
 
     @classmethod
     def from_url(cls, url: str) -> object:
         try:
-            parsed_url: ParsedResult = urlparse(url)
+            parsed_url: ParseResult = urlparse(url)
             parsed_qs: dict = parse_qs(parsed_url.query)
 
             for param in parsed_qs.keys():
