@@ -5,7 +5,7 @@ description = ""
 authors = ["itayb1 <itay4445@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.8.2"
+python = "^3.8.2"
 solana = "^0.21.0"
 
 [tool.poetry.dev-dependencies]
