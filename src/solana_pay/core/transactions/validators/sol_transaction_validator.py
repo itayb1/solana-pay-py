@@ -20,7 +20,7 @@ class SolTransactionValidator(TransactionValidator):
         if transaction.get("meta") == None:
             raise ValidateTransactionError("Transaction has no meta.")
         if meta_error := transaction.get("meta").get("error"):
-            ValidateTransactionError(meta_error)
+            raise ValidateTransactionError(meta_error)
         
         if str(recipient) in transaction["transaction"]["message"]["accountKeys"]:
             recipient_id = transaction["transaction"]["message"]["accountKeys"].index(str(recipient))
