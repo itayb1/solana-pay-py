@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from solana.transaction import TransactionSignature
 from solana.publickey import PublicKey
 from solana_pay.common.exceptions import ValidateTransactionError
@@ -7,11 +8,21 @@ from solana.rpc.commitment import Commitment
 from typing import Optional, Union, List, Dict
 
 
+@dataclass
+class TransactionDetails:
+    signature: TransactionSignature
+    recipient: PublicKey
+    amount: float
+    spl_token: Optional[PublicKey] = None
+    reference: Optional[Union[List[PublicKey], PublicKey]] = None
+    commitment: Optional[Commitment] = None
+
+
 class TransactionValidator:
     def __init__(self, rpc_client: Client):
         self._rpc_client = rpc_client
 
-    def validate(self, signature: TransactionSignature,  recipient: PublicKey, amount: float, spl_token: Optional[PublicKey] = None, reference: Optional[Union[List[PublicKey], PublicKey]] = None, commitment: Optional[Commitment] = None):
+    def __call__(self, transaction_details: TransactionDetails):
         raise NotImplementedError()
  
     @staticmethod

@@ -7,6 +7,7 @@ from solana.transaction import Transaction, TransactionSignature
 from solana.rpc.commitment import Commitment
 from solana_pay.common.exceptions import FindTransactionError
 from solana_pay.core.transactions import SplTransactionValidator, SolTransactionValidator
+from solana_pay.core.transactions.validators.transaction_validator import TransactionDetails
 
 
 class SolanaPay:
@@ -40,7 +41,8 @@ class SolanaPay:
             "reference": reference,
             "commitment": commitment
         }
+        transaction_details = TransactionDetails(**validation_args)
         if spl_token:
-            return self._spl_transaction_validator.validate(**validation_args)
+            return self._spl_transaction_validator(transaction_details)
         else:
-            return self._sol_transaction_validator.validate(**validation_args)
+            return self._sol_transaction_validator(transaction_details)
