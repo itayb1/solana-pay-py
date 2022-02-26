@@ -16,19 +16,8 @@ class SolTransactionBuilder(TransactionBuilder):
     def __init__(self, rpc_client: Client):
         super().__init__(rpc_client)
 
-    def create(self, payer: PublicKey, payment_request: PaymentRequest) -> Transaction:
-        transaction: Transaction = Transaction()
-        transfer_instruction: TransactionInstruction = None
-        transfer_instruction = self._create_transfer_instruction(payer, payment_request)
-       
-        self._add_reference_to_transfer_instruction(payment_request, transfer_instruction)
-        
-        if payment_request.memo:
-            transaction.add(self._create_memo_instruction(payment_request))
-
-        transaction.add(transfer_instruction)
-
-        return transaction
+    def __call__(self, payer: PublicKey, payment_request: PaymentRequest) -> Transaction:
+        return super().__call__(payer=payer, payment_request=payment_request)
 
     @staticmethod
     def __validate_account_info_native_sol(account_info, account_info_name):
