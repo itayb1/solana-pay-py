@@ -20,9 +20,9 @@ class SolanaPay:
 
     def create_transfer_transaction(self, payer: PublicKey, payment_request: PaymentRequest) -> Transaction:
         if payment_request.spl_token:
-            return self._spl_transaction_builder.create(payer, payment_request)
+            return self._spl_transaction_builder(payer, payment_request)
         else:
-            return self._sol_transaction_builder.create(payer, payment_request)
+            return self._sol_transaction_builder(payer, payment_request)
 
     def find_transaction_signature(self, reference: PublicKey, before: Optional[TransactionSignature] = None, limit: Optional[int] = 1000, until: Optional[TransactionSignature] = None, commitment: Commitment = None):
         signatures = self._rpc_client.get_signatures_for_address(reference, before, until, limit, commitment).get('result')
