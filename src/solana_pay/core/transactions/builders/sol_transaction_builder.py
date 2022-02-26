@@ -33,36 +33,26 @@ class SolTransactionBuilder(TransactionBuilder):
     @staticmethod
     def __validate_account_info_native_sol(account_info, account_info_name):
         if PublicKey(account_info["owner"]) != SYS_PROGRAM_ID:
-            raise CreateTransactionError(
-                f"{account_info_name} owner is invalid.")
+            raise CreateTransactionError(f"{account_info_name} owner is invalid.")
         elif account_info["executable"]:
-            raise CreateTransactionError(
-                f"{account_info_name} executable.")
+            raise CreateTransactionError(f"{account_info_name} executable.")
 
     def _create_transfer_instruction(self, payer: PublicKey, payment_request: PaymentRequest) -> TransactionInstruction:
-        payer_info = self._rpc_client.get_account_info(payer)[
-            "result"]["value"]
+        payer_info = self._rpc_client.get_account_info(payer)["result"]["value"]
         if payer_info == None:
-            raise CreateTransactionError(
-                "Invalid payer pk was provided.")
+            raise CreateTransactionError("Invalid payer pk was provided.")
 
-        recipient_info = self._rpc_client.get_account_info(
-            payment_request.recipient)['result']["value"]
-
+        recipient_info = self._rpc_client.get_account_info(payment_request.recipient)['result']["value"]
         if recipient_info == None:
-            raise CreateTransactionError(
-                "Invaid recipient pk was provided.")
+            raise CreateTransactionError("Invaid recipient pk was provided.")
 
-        SolTransactionBuilder.__validate_account_info_native_sol(
-            payer_info, "Payer")
-        SolTransactionBuilder.__validate_account_info_native_sol(
-            recipient_info, "Recipient")
+        SolTransactionBuilder.__validate_account_info_native_sol(payer_info, "Payer")
+        SolTransactionBuilder.__validate_account_info_native_sol(recipient_info, "Recipient")
 
         if find_decimals(payment_request.amount) > SOL_DECIMALS:
             raise CreateTransactionError("Invalid amount of decimals.")
 
-        amount_in_lamports = math.floor(
-            payment_request.amount * LAMPORTS_PER_SOL)
+        amount_in_lamports = math.floor(payment_request.amount * LAMPORTS_PER_SOL)
         if amount_in_lamports > payer_info["lamports"]:
             raise CreateTransactionError("Insufficient funds.")
 
