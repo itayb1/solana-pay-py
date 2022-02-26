@@ -3,6 +3,9 @@ name = "solana-pay-py"
 version = "0.1.0"
 description = ""
 authors = ["itayb1 <itay4445@gmail.com>"]
+packages = [
+    { include = "solana_pay", from = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.8.2"

@@ -1,5 +1,5 @@
 from solana_pay import __version__
-from solana_pay.payment_request import PaymentRequest
+from solana_pay import PaymentRequest
 from solana.publickey import PublicKey
 
 
